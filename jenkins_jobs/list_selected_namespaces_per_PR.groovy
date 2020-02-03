@@ -6,6 +6,7 @@ import io.jenkins.blueocean.rest.impl.pipeline.FlowNodeWrapper
 import io.jenkins.blueocean.rest.impl.pipeline.PipelineNodeGraphVisitor
 import org.jenkinsci.plugins.workflow.actions.LogAction
 
+import groovy.json.JsonSlurperClassic
 import groovy.json.JsonBuilder
 
 @NonCPS
@@ -14,10 +15,11 @@ def assembleMetrics() {
   Map<String, Object> prChecks = new HashMap<String, Object>();
 
   Jenkins.instance.getAllItems(Job.class).each{
-    if (it.getFullName().contains("CDIS GitHub Org/gen3-qa") && it.isBuilding() ) {
+    if (it.getFullName().contains("CDIS GitHub Org/") && it.isBuilding() ) {
       println('short name: ' + it.getFullName().split("/")[2])
       full_build_name = it.getFullName()
-      short_name = full_build_name.split("/")[2]
+      repo_name = full_build_name.split("/")[1]
+      pr_number = full_build_name.split("/")[2]
       full_build_name = it.getFullName()
       WorkflowRun run = Jenkins.instance.getItemByFullName(full_build_name)._getRuns()[0]
 
@@ -42,7 +44,7 @@ def assembleMetrics() {
           def kubectl_namespace = log_entry =~ /jenkins-.*\.planx\-pla\.net/
           if (kubectl_namespace.size() > 0) {
             println("The Jenkins namespace is: ${kubectl_namespace[0]}")
-            prChecks.put("${short_name}", "${kubectl_namespace[0]}")
+            prChecks.put("${pr_number}", new groovy.json.JsonSlurperClassic().parseText('{ "repo": "' + repo_name + '", "namespace": "' + kubectl_namespace[0] + '" }') )
             break
           }
         }
