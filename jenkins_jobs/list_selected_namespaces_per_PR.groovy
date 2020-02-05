@@ -38,13 +38,18 @@ def assembleMetrics() {
         {
           continue;
         }
-        node_output = node.getRun().getLog(100)
+        println('stage: ' + stageName)
+        run = node.getRun()
+        envVars = run.getEnvVars()
+        //println(envVars)
+        author = envVars['CHANGE_AUTHOR']
+        node_output = run.getLog(80)
         for (log_entry in node_output) {
           //println "trying to find the namespace for PR: ${full_build_name}"
-          def kubectl_namespace = log_entry =~ /jenkins-.*\.planx\-pla\.net/
+          def kubectl_namespace = log_entry =~ /\/\/(.*)\.planx\-pla\.net/
           if (kubectl_namespace.size() > 0) {
-            println("The Jenkins namespace is: ${kubectl_namespace[0]}")
-            prChecks.put("${pr_number}", new groovy.json.JsonSlurperClassic().parseText('{ "repo": "' + repo_name + '", "namespace": "' + kubectl_namespace[0] + '" }') )
+            println("The Jenkins namespace is: ${kubectl_namespace[0][1]}")
+            prChecks.put("${pr_number}", new groovy.json.JsonSlurperClassic().parseText('{ "repo": "' + repo_name + '", "namespace": "' + kubectl_namespace[0][1] + '", "by": "'+ author +'" }') )
             break
           }
         }
