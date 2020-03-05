@@ -1,8 +1,8 @@
 #!/bin/bash
 
-if [ "$1" == "-h" ] || [ "$1" == "--help" ] ; then
+if [ "$1" == "-h" ] || [ "$1" == "--help" ] || [ $# -eq 0 ]; then
   echo "------------------------------------------------------------------------------"
-  echo "Usage - gen3-config-diff [-(-m)anifest] [-(-portal)] <[repo/]namespace[:branch]> <[repo/]namespace[:branch]>"
+  echo "Usage - gen3-config-diff [-(-m)anifest] [-(-p)ortal] <[repo/]namespace[:branch]> <[repo/]namespace[:branch]>"
   echo "e.g., gen3-config-diff --manifest gen3.datastage.io:stable gitops-qa/qa-datastage.planx-pla.net"
   echo ""
   echo "This script diffs the configurations of two or more gen3 commons."
@@ -91,11 +91,10 @@ do
 done
 
 # If the user didn't pass the -(-m)anifest or the -(-p)ortal flag,
-# diff both the manifest and the portal by default
+# diff just the manifest.
 if ! $diff_manifest && ! $diff_portal
   then
     diff_manifest=true
-    diff_portal=true
 fi
 
 if $diff_manifest
@@ -103,12 +102,12 @@ if $diff_manifest
     manifest_a_url="${urls[0]}/$manifest_path"
     echo "Fetching manifest from $manifest_a_url..."
     manifest_a_raw=$(curl -sf $manifest_a_url)
-    manifest_a_formatted=$(echo "$manifest_a_raw" | jq -S '.')
+    manifest_a_formatted=$(echo "$manifest_a_raw" | jq -S '.' | jq '{versions} + .')
 
     manifest_b_url="${urls[1]}/$manifest_path"
     echo "Fetching manifest from $manifest_b_url..."
     manifest_b_raw=$(curl -sf $manifest_b_url)
-    manifest_b_formatted=$(echo "$manifest_b_raw" | jq -S '.')
+    manifest_b_formatted=$(echo "$manifest_b_raw" | jq -S '.' | jq '{versions} + .')
 
     # read manifests into temporary files
     namespace_a="${namespaces[0]}"
