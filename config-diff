@@ -2,8 +2,8 @@
 
 if [ "$1" == "-h" ] || [ "$1" == "--help" ] || [ $# -eq 0 ]; then
   echo "------------------------------------------------------------------------------"
-  echo "Usage - gen3-config-diff [-(-m)anifest] [-(-p)ortal] <[repo/]namespace[:branch]> <[repo/]namespace[:branch]>"
-  echo "e.g., gen3-config-diff --manifest gen3.datastage.io:stable gitops-qa/qa-datastage.planx-pla.net"
+  echo "Usage - config-diff [-(-m)anifest] [-(-p)ortal] <[repo/]namespace[:branch]> <[repo/]namespace[:branch]>"
+  echo "e.g., config-diff --manifest gen3.datastage.io:stable gitops-qa/qa-datastage.planx-pla.net"
   echo ""
   echo "This script diffs the configurations of two or more gen3 commons."
   echo "By default, the script will diff the commons' main configuration (manifest.json) and then its portal configuration (gitops.json)."
