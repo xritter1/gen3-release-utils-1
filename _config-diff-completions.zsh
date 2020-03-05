@@ -11,8 +11,15 @@ get_github_resources() {
 }
 
 function _config-diff {
-    # load environments list line-by-line into an array
-    local -a suggestions
-    suggestions=($(get_github_resources))
-    _describe 'command' suggestions
+  # Look for completions in a temporary file; if they don't already exist,
+  # pull the completions from github.
+  completions_filename='/tmp/config-diff-completions.txt'
+  if [ ! -f $completions_filename ]
+    then
+      completions_file=$(mktemp $completions_filename)
+      echo "$(get_github_resources)" >> $completions_file
+  fi
+  local -a suggestions
+  suggestions=($(cat $completions_filename))
+  _describe 'command' suggestions
 }
