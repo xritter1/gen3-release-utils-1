@@ -1,0 +1,47 @@
+{
+  "services": [
+    {
+	"name": "arborist",
+	"tests": ["https://github.com/uc-cdis/gen3-qa/blob/master/suites/apis/centralizedAuth.js"],
+	"affinity": ["arcadia"],
+	"repo_url": "https://github.com/uc-cdis/arborist",
+	"docker_image": "quay.io/cdis/arborist"
+    },
+    {
+      "name": "gen3-statics",
+      "tests": ["https://github.com/uc-cdis/gen3-qa/blob/master/suites/apis/centralizedAuth.js"],
+      "affinity": ["arcadia"],
+      "repo_url": "https://github.com/uc-cdis/arborist",
+      "docker_image": "quay.io/cdis/arborist"
+    },
+
+      
+gen3-statics
+fence
+cdis-data-client
+guppy
+hatchery
+indexd
+manifestservice
+pelican
+peregrine
+pidgin
+data-portal
+sheepdog
+sower
+ssjdispatcher
+tube
+workspace-token-service
+gen3-fuse
+indexs3client
+    gen3-spark
+    
+  "services": [
+    {
+      "name": "revproxy",
+      "tests": ["gen3-qa/docs/howto/running-k6-load-test-with-har.md", "gen3-qa/load-testing/fence/presigned-url.js"],
+      "affinity" ["devops"],
+      "repo_url": "https://github.com/uc-cdis/cloud-automation/tree/master/kube/services/revproxy",
+      "docker_image": "quay.io/cdis/nginx"
+   }
+}
