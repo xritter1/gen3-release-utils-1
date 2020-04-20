@@ -3,17 +3,25 @@
     {
 	"name": "arborist",
 	"tests": ["https://github.com/uc-cdis/gen3-qa/blob/master/suites/apis/centralizedAuth.js"],
-	"affinity": ["arcadia"],
+	"affinity": {
+	    "primary": "arcadia",
+            "secondary": "???"
+	},
 	"repo_url": "https://github.com/uc-cdis/arborist",
 	"docker_image": "quay.io/cdis/arborist"
     },
     {
-      "name": "gen3-statics",
-      "tests": ["https://github.com/uc-cdis/gen3-qa/blob/master/suites/apis/centralizedAuth.js"],
-      "affinity": ["arcadia"],
-      "repo_url": "https://github.com/uc-cdis/arborist",
-      "docker_image": "quay.io/cdis/arborist"
+        "name": "gen3-statics",
+	"tests": ["https://github.com/uc-cdis/gen3-qa/blob/master/suites/apis/centralizedAuth.js"],
+	"affinity": {
+	    "primary": "arcadia",
+            "secondary": "???"
+	},	
+        "repo_url": "https://github.com/uc-cdis/arborist",
+        "docker_image": "quay.io/cdis/arborist"
     },
+  ]
+}
 
       
 gen3-statics
