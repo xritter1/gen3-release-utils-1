@@ -33,23 +33,27 @@ tasks = [
     'description': 'Full list of tests tracked in the "Test Plan - Gen3 Releases" spreadsheet'
   },
   {
-    'title': '6. Merge the integration branch into stable and tag the release',
+    'title': '6. Run load tests against one of the QA environments',
+    'description': 'Pick critical load testing scenarios and run them with: https://jenkins.planx-pla.net/job/gen3-run-load-tests/'
+  },
+  {
+    'title': '7. Merge the integration branch into stable and tag the release',
     'description': 'Kick off this job: https://jenkins.planx-pla.net/job/merge-integration-branch-into-stable-and-tag/. Once the tag-based images are built in Quay, sanity check the images by creating a `gitops-qa` PR to deploy them against one of the QA environments.'
   },  
   {
-    'title': '7. Generate release notes and publish release manifest into `cdis-manifest/<year>/<month>` folder',
+    'title': '8. Generate release notes and publish release manifest into `cdis-manifest/<year>/<month>` folder',
     'description': 'Generate the release notes with this Jenkins job: https://jenkins.planx-pla.net/job/gen3-qa-monthly-release-notes-generator. The cdis-manifest PR is tailored manually and it should include release notes and known bugs files (the PR must be labeled with `doc-only`).'
   },
   {
-    'title': '8. Create cdis-manifest PRs for {}'.format(release),
+    'title': '9. Create cdis-manifest PRs for {}'.format(release),
     'description': 'Kick off this job: https://jenkins.planx-pla.net/job/create-prs-for-all-monthly-release-envs/'
   },
   {
-    'title': 'SHARED: 9. Follow up with PMs to merge the PRs of respective commons',
+    'title': 'SHARED: 10. Follow up with PMs to merge the PRs of respective commons',
     'description': 'The `automerge` label is applied automatically to all PRs, once the PM approves it, the changes will be automatically merged and deployed to the environment. The QA engineers should monitor the PRs in case of any CI check failures.'
   },
   {
-    'title': '10. Pushing monthly release quay images to AWS ECR (as a backup)',
+    'title': '11. Pushing monthly release quay images to AWS ECR (as a backup)',
     'description': 'Kick off this job: https://jenkins.planx-pla.net/job/push-gen3-monthly-release-images-to-aws-ecr. Also double-check if the repos_list.txt is up-to-date.'
   },
 ]
