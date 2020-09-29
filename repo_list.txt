@@ -1,4 +1,3 @@
-cdis-data-client
 pelican
 peregrine
 pidgin
