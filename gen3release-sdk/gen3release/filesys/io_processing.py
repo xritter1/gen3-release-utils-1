@@ -148,10 +148,7 @@ def merge(source, destination):
             node = destination.setdefault(key, {})
             merge(value, node)
         else:
-            if value or value == 0:
-                destination[key] = value
-            else:
-                destination.pop(key, None)
+            destination[key] = value
 
     return destination
 
@@ -170,10 +167,8 @@ def process_sower_jobs(mani_json, srcEnv_sowers, tgtEnv_sowers):
     target environment. Retains target's service account name.
     """
     superflous_resources = []
-    if not tgtEnv_sowers:
-        mani_json.pop("sower", None)
-        return mani_json
-    elif not srcEnv_sowers:
+    if srcEnv_sowers == []:
+        mani_json["sower"] = []
         return mani_json
 
     srcnames = [x.get("name") for x in srcEnv_sowers]
@@ -195,21 +190,6 @@ def process_sower_jobs(mani_json, srcEnv_sowers, tgtEnv_sowers):
         if accountname:
             s_job["serviceAccountName"] = accountname
     return mani_json
-
-
-def clean_dictionary(dic):
-    """
-    Removes all keys in a nested dictionary that have null values
-    """
-    if not isinstance(dic, (dict, list)):
-        return dic
-    if isinstance(dic, list):
-        return [v for v in (clean_dictionary(v) for v in dic) if v or v == 0]
-    return {
-        k: v
-        for k, v in ((k, clean_dictionary(v)) for k, v in dic.items())
-        if v or v == 0
-    }
 
 
 def recursive_copy(srcEnv, tgtEnv, src, dst):
@@ -263,12 +243,17 @@ def recursive_copy(srcEnv, tgtEnv, src, dst):
                                 dst + "/" + a_file
                             )
                         )
-                        if a_file == "manifest.json":
-                            srcEnv.load_sower_jobs(src_data)
-                            tgtEnv.load_sower_jobs(tgt_data)
+                        # remember environment-specific information
+                        src_envparmas = store_environment_params(
+                            src_data, srcEnv, a_file
+                        )
+                        logging.debug(
+                            "Stored source parameters: {}".format(src_envparmas)
+                        )
 
-                        tgt_envparams = tgtEnv.load_environment_params(a_file, tgt_data)
-
+                        tgt_envparams = store_environment_params(
+                            tgt_data, tgtEnv, a_file
+                        )
                         logging.debug(
                             "Stored target parameters: {}".format(tgt_envparams)
                         )
@@ -281,10 +266,6 @@ def recursive_copy(srcEnv, tgtEnv, src, dst):
                         src_data = merge(
                             tgtEnv.environment_specific_params[a_file], src_data
                         )
-                        # Remove any fields with no data
-                        src_data = clean_dictionary(src_data)
-
-                        # Assure no keys without values
                         modified_file = True
 
                     if names_template:
