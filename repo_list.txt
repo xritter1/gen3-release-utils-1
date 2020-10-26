@@ -1,15 +1,1 @@
-peregrine
-pidgin
-data-portal
-sheepdog
-sower
-sower-jobs
-ssjdispatcher
-tube
-workspace-token-service
-gen3-fuse
-indexs3client
-gen3-spark
-metadata-service
-docker-nginx
 dcf-dataservice
