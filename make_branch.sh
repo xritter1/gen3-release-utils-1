@@ -40,6 +40,7 @@ while IFS= read -r repo; do
     exit 1
   fi
   git remote set-url origin ${urlPrefix}${repo}
+  git remote -v
   result=$(git push origin "${targetBranchName}")
   RC=$?
   if [ $RC -ne 0 ]; then
