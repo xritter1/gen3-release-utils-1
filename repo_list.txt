@@ -1,6 +1,3 @@
-pelican
-peregrine
-pidgin
 data-portal
 sheepdog
 sower
