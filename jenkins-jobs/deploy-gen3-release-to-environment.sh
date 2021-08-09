@@ -15,6 +15,11 @@
 # GITHUB_TOKEN
 # Obtained through Jenkins credentials
 
+if [ -z "$TARGET_ENVIRONMENT" ]
+then echo "Error: TARGET_ENVIRONMENT is empty!"
+exit 1
+fi
+
 git clone https://github.com/uc-cdis/${REPO_NAME}.git
 
 export PATH=$PATH:/var/jenkins_home/.local/bin:/var/jenkins_home/.local/lib:/home/jenkins/.local/bin
