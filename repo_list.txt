@@ -1,12 +1,3 @@
-guppy
-hatchery
-indexd
-manifestservice
-pelican
-peregrine
-pidgin
-data-portal
-sheepdog
 sower
 sower-jobs
 ssjdispatcher
